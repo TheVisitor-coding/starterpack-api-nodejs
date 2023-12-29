@@ -1,0 +1,5 @@
+extends layout
+
+block content
+  form(action=`/terrains/${id}/flooded`, method="post")
+      button(type="submit") Définir le terrain comme impraticable

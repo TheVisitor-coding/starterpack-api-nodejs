@@ -5,14 +5,19 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
-var indexRouter = require('./routes/index');
+var loginRouter = require('./routes/login');
+var reservationsRouter = require('./routes/reservations');
+var dispoTerrainRouter = require('./routes/terrain');
+var floodedRouter = require('./routes/flooded');
+const hal = require('./hal');
+
 
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -21,9 +26,30 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
+ * Home
+ */
+app.get('/', async function (req, res, next) {
+  res.status(200).set('Content-Type', 'application/json')
+    .send({
+      _links: {
+        self: hal.halLinkObject('/'),
+        login: hal.halLinkObject('/login'),
+        terrains: hal.halLinkObject('/terrains'),
+        reservations: hal.halLinkObject('/terrains/{id}/reservations', 'string', "Réservation du terrain à une horaire choisie", true),
+      },
+      description: 'Bienvenue sur le système de réservation de terrain badminton !'
+    }
+    );
+});
+
+
+/**
  * Enregistrement des routes
  */
-app.use('/', indexRouter);
+app.use('/', loginRouter);
+app.use('/', reservationsRouter);
+app.use('/', dispoTerrainRouter)
+app.use('/', floodedRouter)
 
 
 /**

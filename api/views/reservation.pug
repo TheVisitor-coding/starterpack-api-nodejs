@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1 Réservation de terrain
+  form(action=`/terrains/${id}/reservations`, method='post')
+    label(for='horaire') Choisissez une date et une heure :
+    select(name='horaire')
+      each horaire in horaires
+        option(value=horaire.date) #{horaire.dateName}
+    button(type='submit') Valider

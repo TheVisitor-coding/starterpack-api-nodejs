@@ -2,14 +2,14 @@ const swaggerAutogen = require('swagger-autogen')()
 
 const outputFile = './swagger_output.json'
 
-const endpointsFiles = ['./routes/index.js']
+const endpointsFiles = ['./app.js']
 
 const doc = {
     info: {
         title: 'web API RESTful',
-        description: 'Starter pack',
+        description: 'API Badminton Reservation',
     },
-    host: 'localhost:5001',
+    host: 'localhost:3030',
     schemes: ['http'],
 };
 
